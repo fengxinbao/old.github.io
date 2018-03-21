@@ -1,164 +1,35 @@
-
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-	</head>
-	<body>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>Bootstrap 101 Template</title>
 
-		<div id ="question-area">
-			<p id="question"></p>
-			<p id="answer"></p>
-		</div>
-		<div id="buttons">
-			<button onclick="showAnswer()">ANSWER</button>
-			<button onclick="next()">NEXT</button>
-			<button onclick="previous()">PREVIOUS</button>
-			<button onclick="selectFile()">ADD QUESTIONS</button>
-			<input type="file" id="file" style="display: none" onchange="read()"/>
-		</div>
-		<div>
-			<p id="count"></p>
-	        <p id="file-names"></p>	
-		</div>
+<!-- Bootstrap -->
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="grammar.css" rel="stylesheet">
 
-		<style rel="stylesheet">
-			body {
-				margin: auto;
-				font-family: Georgia;
-				font-size: 35px;
-			    line-height: 1.5;
-			}
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-			#question-area{
-				width: 1000px;
-				height: 300px;
-				margin: 120px auto;
-			}
+</head>
+<body>
+	<div class="container" id="container">
+	</div>
+	<!-- /container -->
 
-			#buttons {
-				text-align: center;
-			}
 
-			button {
-				margin: 10px 20px;
-				width: 20%;
-			    height: 50px;
-				font-size: 20px;
-				color: gray;
-			}
-			p {
-				margin: 30px 20px;
-			}
-
-			span {
-				 font-size: 18px;
-				 margin: 10px 20px;
-			}
-		</style>
-
-	<script>
-Array.prototype.shuffle = function(){
-	let m = this.length, i;
-	while(m) {
-		i = (Math.random() * m--) >>> 0;
-		[this[m], this[i]] = [this[i], this[m]];
-	}
-	return this;
-}
-
-let vocabulary = '[{"filename":"vocabulary","sentence":"cryptic","answer":"神秘的"},{"filename":"vocabulary","sentence":"indice","answer":"指数"},{"filename":"vocabulary","sentence":"hygiene","answer":"卫生"},{"filename":"vocabulary","sentence":"affliction","answer":"苦恼，痛苦"},{"filename":"vocabulary","sentence":"slob","answer":"懒汉"},{"filename":"vocabulary","sentence":"tally","answer":"测量，计数"},{"filename":"vocabulary","sentence":"tangle","answer":"纠缠，纠纷; 混乱"},{"filename":"Congrats!","sentence":"Congrats!","answer":"Congrats!"}]';
-
-		window.onload = function(){
-		  QUESTIONS = JSON.parse(vocabulary); 
-		  fillText(QUESTIONS[0].sentence, QUESTIONS[0].answer);
-		}
-
-		let QUESTIONS = [];
-		let previousQuestion = [];
-		let index = 1;
-		let fileNames = [];
-
-		function next(){
-			let {sentence, answer} = pickOne();
-			previousQuestion.unshift({sentence, answer});
-			previousQuestion = previousQuestion.slice(0,2);
-			fillText(sentence, answer);
-		}
-
-		function previous(){
-			fillText(previousQuestion[1].sentence, previousQuestion[1].answer);
-		}
-
-		function fillText(sentence, answer){
-			document.getElementById("question").innerHTML = sentence;
-			document.getElementById("answer").innerHTML = answer;
-			document.getElementById("answer").style.display="none";
-		}
-
-		function showAnswer(){
-			document.getElementById("answer").style.display="";
-		}
-
-		function pickOne(){
-
-			if(QUESTIONS.length == 0) 
-				return {filename: "No file!", sentence: "No questions!", answer: "No answers!"};
-			if(index == QUESTIONS.length){
-				QUESTIONS = QUESTIONS.slice(0, QUESTIONS.length-1);
-				QUESTIONS.shuffle();
-				QUESTIONS.push({filename:"Congrats!", sentence:"Congrats!", answer:"Congrats!"})
-				index = 0;
-			}
-
-			return QUESTIONS[index++];
-		}
-
-		function selectFile(){
-			document.getElementById("file").click();
-		}
-
-		function read(){
-			let file = document.getElementById("file").files[0];
-			fileNames.push(file.name);
-		    addQuestions();
-
-			function addQuestions(){
-				let reader = new FileReader();
-				reader.readAsText(file, "UTF-8");
-				reader.onload = function(){
-					let result = this.result.split("\n");
-					for(let i=0; i<result.length; ){
-						if(result[i].trim()){
-							addOneQuestion(file.name, result[i].trim(), result[i+1].trim());
-							i+=2;
-						} else {
-							i++;
-						}
-					}
-					QUESTIONS.shuffle();
-					QUESTIONS.push({filename:"Congrats!", sentence:"Congrats!", answer:"Congrats!"})
-					index = 0;
-
-					listFiles();
-					console.log(JSON.stringify(QUESTIONS));
-				}
-
-				function addOneQuestion(filename, sentence, answer){
-					QUESTIONS.push({filename, sentence, answer});
-				}
-
-				function listFiles(){
-					for(let i=0; i<fileNames.length; i++){
-						document.getElementById("file-names").innerHTML += "<span class='file-name'>" + fileNames[i] + "</span>";
-					}
-
-					document.getElementById("count").innerHTML = QUESTIONS.length - 1;
-				}
-			}
-		}
-
-	</script>
-
-	</body>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script
+		src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="grammar.js"></script>
+</body>
 </html>
